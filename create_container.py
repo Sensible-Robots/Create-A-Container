@@ -8,7 +8,10 @@ import subprocess
 
 echo_line = 'export PS1=\\"\\[\\033[01;32m\\]Apptainer\\[\\033[00m\\]:\\[\\033[01;33m\\]\\w\\[\\033[00m\\]> \\"'
 
-builder = "singularity" if os.path.isdir("singularity") else "apptainer"
+original_user = os.getenv("SUDO_USER")
+hd = os.path.expanduser(f"~{original_user}")
+
+builder = "singularity" if os.path.isdir(os.path.join(hd, "singularity")) else "apptainer"
 
 def check_sudo():
     if os.geteuid() != 0:
