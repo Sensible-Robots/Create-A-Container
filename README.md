@@ -1,7 +1,7 @@
 # Container Creation Tutorial
 Author: Peter Tisnikar
 
-Last Updated: 19 August 2024
+Last Updated: 20 August 2024
 
 *NOTE: This tutorial is a work in progress, and contributions of any kind are more than welcome. Please contact the author to discuss possible contributions and topics you would like to see included in the future.*
 
@@ -18,6 +18,8 @@ This tutorial was written for, and tested on, an Ubuntu machine. I will not supp
 In order to be able to run the script, you must have either Singularity or Apptainer installed on your machine, on which you will also need sudo privileges.
 
 I ***strongly*** recommend installing Apptainer as an Ubuntu package, either by using the provided ```install_update_apptainer.sh``` script (with thanks to its creator Gerard Canal), or as shown [here](https://apptainer.org/docs/admin/1.2/installation.html). Singularity does not have pre-built Ubuntu packages and its installation is a lot more involved. Apptainer is also newer, and is the system that runs both on the RAP Workstation as well as the CREATE HPC cluster.
+
+To keep Apptainer up to date, you can periodically re-run the ```install_update_apptainer.sh``` script, which will update Apptainer if an update is available. Alternatively, you can update Apptainer manually.
 
 Once you've installed Apptainer, you can move on to creating containers with the script. The script should only contain libraries that are standard Python libraries and come included with a fresh Python installation. If your script does not work because of an import error, carefully read what it says and ```pip install``` the appropriate library.
 
