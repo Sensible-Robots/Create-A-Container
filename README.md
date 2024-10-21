@@ -1,7 +1,7 @@
 # Container Creation Tutorial
 Author: Peter Tisnikar
 
-Last Updated: 20 August 2024
+Last Updated: 21 October 2024
 
 *NOTE: This tutorial is a work in progress, and contributions of any kind are more than welcome. Please contact the author to discuss possible contributions and topics you would like to see included in the future.*
 
@@ -114,5 +114,20 @@ It is possible that you will need to add libraries that do not exist as packages
     python3.10 -m pip install -e .[benchmark]
     
     echo "export PS1=\"\[\033[01;32m\]Apptainer\[\033[00m\]:\[\033[01;33m\]\w\[\033[00m\]> \"" >> /.singularity.d/env/99-base.sh
+
 ```
+## Building and Running a Container on the Create HPC
+For large experiments, you may wish to utilise Kings' High Performance Computing (HPC) cluster known as Create. If you do not already have access to the cluster, you can follow the [official guide](https://docs.er.kcl.ac.uk/CREATE/access/) to request access.
+
+Building the container on the HPC is different, as due to different Ubuntu versions, Singularity (Apptainer) versions, and differences in the filesystem, we cannot simply build the container locally and SCP the built `.sif` over to our userspace on the HPC. Instead, we have to build the container as outlined in the [official Create Singularity guide](https://docs.er.kcl.ac.uk/CREATE/software/singularity/), which essentially involves building the container using Singularity's [remote builder option](https://cloud.sylabs.io/builder), which gets around the issue of us not having root privileges on Create. One advantage of this is, once built, the container is saved to the cloud in your Sylabs account, so you can pull the built container remotely onto any compatible device.
+
+To run the container, you will need to create a bash script that invokes Singularity, along with the Create-specific requesting of compute resources (see [here](https://docs.er.kcl.ac.uk/CREATE/running_jobs/) for details on that). It is not (to the best of our knowledge) possible to queue up a `singularity run...` command followed by the commands you wish to execute inside the container. Instead, we recommend making use of the `singularity exec ...` command, which allows you to specific a sequence of commands to be run immediately inside of the container. For example, you can add this to your bash script to `cd` into your project directory and run your Python experiment:
+
+```bash
+singularity exec --nv "<PATH TO CONTAINER .SIF>" bash -c "cd <PROJECT DIRECTORY PATH> && pythonX.X <YOUR AWESOME EXPERIMENT>.py"
+```
+
+As shown above, to chain together commands, you can seperate them using `&&` in the command string block after the `bash -c` flag. For more information, see the documentation on the `exec` command [here](https://docs.sylabs.io/guides/3.1/user-guide/cli/singularity_exec.html).
+
+
 
